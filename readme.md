@@ -1,5 +1,8 @@
 ## Laravel 5 Translation Manager
 
+### Updates
+- Forked from [laravel-translation-manager](https://github.com/barryvdh/laravel-translation-manager) to implement more customizations options.
+
 ### For Laravel 4, please use the [0.1 branch](https://github.com/barryvdh/laravel-translation-manager/tree/0.1)!
 
 This is a package to manage Laravel translation files.
