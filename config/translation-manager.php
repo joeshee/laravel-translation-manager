@@ -41,4 +41,10 @@ return array(
 	 */
 	'sort_keys ' => false,
 
+    /**
+     * Override the default languages path - required when locales exist at
+     * locations other than the project root or the source control.
+     */
+    'language_path' => null,
+
 );

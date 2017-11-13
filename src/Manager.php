@@ -1,5 +1,7 @@
 <?php namespace Barryvdh\TranslationManager;
 
+use Carbon\Carbon;
+use Dingo\Api\Auth\Auth;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Events\Dispatcher;
 use Barryvdh\TranslationManager\Models\Translation;
@@ -91,21 +93,30 @@ class Manager{
         }
         $value = (string)$value;
         $translation = Translation::firstOrNew(array(
-            'locale' => $locale,
-            'group'  => $group,
-            'key'    => $key,
+            'trans_locale' => $locale,
+            'trans_group'  => $group,
+            'trans_key'    => $key,
+            'trans_created_by' => 12345,
+            'trans_updated_by' => 12345,
         ));
 
         // Check if the database is different then the files
-        $newStatus = $translation->value === $value ? Translation::STATUS_SAVED : Translation::STATUS_CHANGED;
-        if ($newStatus !== (int)$translation->status) {
-            $translation->status = $newStatus;
+        $newStatus = $translation->trans_value === $value ? Translation::STATUS_SAVED : Translation::STATUS_CHANGED;
+        if ($newStatus !== (int)$translation->trans_status) {
+            $translation->trans_status = $newStatus;
         }
 
         // Only replace when empty, or explicitly told so
-        if ($replace || !$translation->value) {
-            $translation->value = $value;
+        if ($replace || !$translation->trans_value) {
+            $translation->trans_value = $value;
         }
+
+        $translation->trans_updated_by = 12345;
+        $translation->trans_created_by = 12345;
+        $translation->trans_locale = $locale;
+        $translation->trans_group = $group;
+        $translation->trans_key = $key;
+        $translation->trans_value = $value;
 
         $translation->save();
         return true;
@@ -219,7 +230,7 @@ class Manager{
                 }
             }
 
-            Translation::ofTranslatedGroup(self::JSON_GROUP)->update(array('status' => Translation::STATUS_SAVED));
+            Translation::ofTranslatedGroup(self::JSON_GROUP)->update(array('trans_status' => Translation::STATUS_SAVED));
         }
     }
 
