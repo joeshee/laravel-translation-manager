@@ -33,13 +33,23 @@ class Manager{
     public function missingKey($namespace, $group, $key)
     {
         if(!in_array($group, $this->config['exclude_groups'])) {
-            Translation::firstOrCreate(array(
+            $translationKey = Translation::where([
                 'trans_locale' => $this->app['config']['app.locale'],
                 'trans_group' => $group,
-                'trans_key' => $key,
-                'trans_updated_by' => 12345,
-                'trans_created_by' => 12345,
-            ));
+                'trans_key' => $key
+            ])->first();
+
+            if(is_null($translationKey)) {
+                $translationKey = new Translation;
+                $translationKey->trans_value = '';
+            }
+
+            $translationKey->trans_locale = $this->app['config']['app.locale'];
+            $translationKey->trans_group = $group;
+            $translationKey->trans_key = $key;
+            $translationKey->trans_updated_by = 12345;
+            $translationKey->trans_created_by = 12345;
+            $translationKey->save();
         }
     }
 

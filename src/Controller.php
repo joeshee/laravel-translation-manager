@@ -93,13 +93,24 @@ class Controller extends BaseController
             $value = request()->get('value');
 
             list($locale, $key) = explode('|', $name, 2);
-            $translation = Translation::firstOrNew([
+
+            $translation = Translation::where([
                 'trans_locale' => $locale,
                 'trans_group' => $group,
                 'trans_key' => $key,
-            ]);
+            ])->first();
+
+            if(is_null($translation)) {
+                $translation = new Translation();
+            }
+
+            $translation->trans_locale = $locale;
+            $translation->trans_group = $group;
+            $translation->trans_key = $key;
             $translation->trans_value = (string) $value ?: null;
             $translation->trans_status = Translation::STATUS_CHANGED;
+            $translation->trans_updated_by = 12345;
+            $translation->trans_created_by = 12345;
             $translation->save();
             return array($this->columns['status'] ?? 'status' => 'ok');
         }
