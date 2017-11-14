@@ -34,9 +34,11 @@ class Manager{
     {
         if(!in_array($group, $this->config['exclude_groups'])) {
             Translation::firstOrCreate(array(
-                'locale' => $this->app['config']['app.locale'],
-                'group' => $group,
-                'key' => $key,
+                'trans_locale' => $this->app['config']['app.locale'],
+                'trans_group' => $group,
+                'trans_key' => $key,
+                'trans_updated_by' => 12345,
+                'trans_created_by' => 12345,
             ));
         }
     }
