@@ -214,7 +214,7 @@ class Manager{
                         $this->files->put($path, $output);
                     }
                 }
-                Translation::ofTranslatedGroup($group)->update(array('status' => Translation::STATUS_SAVED));
+                Translation::ofTranslatedGroup($group)->update(array('trans_status' => Translation::STATUS_SAVED));
             }
         }
 
@@ -236,7 +236,7 @@ class Manager{
 
     public function exportAllTranslations()
     {
-        $groups = Translation::whereNotNull('value')->selectDistinctGroup()->get('group');
+        $groups = Translation::whereNotNull('value')->selectDistinctGroup()->get('trans_group');
 
         foreach($groups as $group){
             if ($group == self::JSON_GROUP) {

@@ -39,12 +39,12 @@ class Translation extends Model{
 
     public function scopeOfTranslatedGroup($query, $group)
     {
-        return $query->where($this->columns['group'] ?? 'group', $group)->whereNotNull('value');
+        return $query->where($this->columns['group'] ?? 'group', $group)->whereNotNull('trans_value');
     }
 
     public function scopeOrderByGroupKeys($query, $ordered) {
         if ($ordered) {
-            $query->orderBy($this->columns['group'] ?? 'group')->orderBy('key');
+            $query->orderBy($this->columns['group'] ?? 'group')->orderBy('trans_key');
         }
 
         return $query;

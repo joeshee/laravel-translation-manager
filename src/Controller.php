@@ -94,12 +94,12 @@ class Controller extends BaseController
 
             list($locale, $key) = explode('|', $name, 2);
             $translation = Translation::firstOrNew([
-                'locale' => $locale,
-                'group' => $group,
-                'key' => $key,
+                'trans_locale' => $locale,
+                'trans_group' => $group,
+                'trans_key' => $key,
             ]);
-            $translation->value = (string) $value ?: null;
-            $translation->status = Translation::STATUS_CHANGED;
+            $translation->trans_value = (string) $value ?: null;
+            $translation->trans_status = Translation::STATUS_CHANGED;
             $translation->save();
             return array($this->columns['status'] ?? 'status' => 'ok');
         }
