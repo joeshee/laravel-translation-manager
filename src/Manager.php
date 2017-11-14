@@ -262,9 +262,9 @@ class Manager{
         $array = array();
         foreach($translations as $translation){
             if ($json) {
-                $this->jsonSet($array[$translation->locale][$translation->group], $translation->key, $translation->value);
+                $this->jsonSet($array[$translation->trans_locale][$translation->trans_group], $translation->trans_key, $translation->trans_value);
             } else {
-                array_set($array[$translation->locale][$translation->group], $translation->key, $translation->value);
+                array_set($array[$translation->trans_locale][$translation->trans_group], $translation->trans_key, $translation->trans_value);
             }
         }
         return $array;
