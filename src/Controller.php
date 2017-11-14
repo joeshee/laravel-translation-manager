@@ -39,14 +39,14 @@ class Controller extends BaseController
         $numTranslations = count($allTranslations);
         $translations = [];
         foreach($allTranslations as $translation){
-            $translations[$translation->key][$translation->locale] = $translation;
+            $translations[$translation->{$this->columns['key'] ?? 'key'}][$translation->{$this->columns['locale'] ?? 'locale'}] = $translation;
         }
 
          return view('translation-manager::index')
             ->with('translations', $translations)
             ->with('locales', $locales)
             ->with('groups', $groups)
-            ->with($this->columns['group'] ?? 'group', $group)
+            ->with('group', $group)
             ->with('numTranslations', $numTranslations)
             ->with('numChanged', $numChanged)
             ->with('editUrl', action('\Barryvdh\TranslationManager\Controller@postEdit', [$group]))
