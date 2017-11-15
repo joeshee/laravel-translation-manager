@@ -178,7 +178,7 @@ class Manager{
 
             if(preg_match_all("/$stringPattern/siU", $file->getContents(), $matches)) {
                 foreach ($matches['string'] as $key) {
-                    if (preg_match("/(^[a-zA-Z0-9_-]+([.][^\1)\ ]+)+$)/siU", $key, $groupMatches)) {
+                    if (preg_match("/(^[a-zA-Z0-9_-]+([.][^\1)\ ]+))/siU", $key, $groupMatches)) {
                         // group{.group}.key format, already in $groupKeys but also matched here
                         // do nothing, it has to be treated as a group
                         continue;
@@ -190,6 +190,8 @@ class Manager{
         // Remove duplicates
         $groupKeys = array_unique($groupKeys);
         $stringKeys = array_unique($stringKeys);
+
+
 
         // Add the translations to the database, if not existing.
         foreach($groupKeys as $key) {
@@ -261,7 +263,7 @@ class Manager{
 
     public function cleanTranslations()
     {
-        Translation::whereNull('value')->delete();
+        Translation::whereNull('trans_value')->delete();
     }
 
     public function truncateTranslations()
