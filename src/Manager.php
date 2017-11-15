@@ -303,4 +303,22 @@ class Manager{
         return $array;
     }
 
+    /**
+     * Encode nvarchar values
+     *
+     * @param $value
+     * @return  DB
+     */
+    public function nvarchar_encode($value) {
+        // Check if value is not empty , not numeric, not date
+        // Warning strtotime treats day and date word as a valid date like Friday, January
+        if (!empty($value) && (!is_numeric($value)) && (!strtotime($value))) {
+//            $value = mb_convert_encoding(trim($value), Config::get('constants.ENCODING_TYPE'));
+            $connection = \DB::connection()->getPdo();
+            $escapedValue = $connection->quote((string)$value, \PDO::PARAM_STR);
+            $value = \DB::raw('N'.$escapedValue);
+        }
+
+        return $value;
+    }
 }

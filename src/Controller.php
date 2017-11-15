@@ -108,7 +108,7 @@ class Controller extends BaseController
             $translation->trans_locale = $locale;
             $translation->trans_group = $group;
             $translation->trans_key = $key;
-            $translation->trans_value = $this->nvarchar_encode($value ?? '');
+            $translation->trans_value = $this->manager->nvarchar_encode($value ?? '');
             $translation->trans_status = Translation::STATUS_CHANGED;
             $translation->trans_updated_by = 12345;
             $translation->trans_created_by = 12345;
@@ -151,24 +151,5 @@ class Controller extends BaseController
         $this->manager->exportTranslations($group, $json);
 
         return ['status' => 'ok'];
-    }
-
-    /**
-     * Encode nvarchar values
-     *
-     * @param $value
-     * @return  DB
-     */
-    function nvarchar_encode($value) {
-        // Check if value is not empty , not numeric, not date
-        // Warning strtotime treats day and date word as a valid date like Friday, January
-        if (!empty($value) && (!is_numeric($value)) && (!strtotime($value))) {
-//            $value = mb_convert_encoding(trim($value), Config::get('constants.ENCODING_TYPE'));
-            $connection = \DB::connection()->getPdo();
-            $escapedValue = $connection->quote((string)$value, \PDO::PARAM_STR);
-            $value = \DB::raw('N'.$escapedValue);
-        }
-
-        return $value;
     }
 }
