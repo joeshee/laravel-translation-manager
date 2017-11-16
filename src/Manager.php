@@ -164,7 +164,7 @@ class Manager{
 
         // Find all PHP + Twig files in the app folder, except for storage
         $finder = new Finder();
-        $finder->in($path)->exclude('storage')->name('*.php')->name('*.twig')->files();
+        $finder->in($path)->exclude(['storage', 'vendor'])->name('*.php')->name('*.twig')->files();
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ($finder as $file) {
@@ -172,7 +172,9 @@ class Manager{
             if(preg_match_all("/$groupPattern/siU", $file->getContents(), $matches)) {
                 // Get all matches
                 foreach ($matches[2] as $key) {
-                    $groupKeys[] = $key;
+                    if( !str_contains($key, '$') ) {
+                        $groupKeys[] = $key;
+                    }
                 }
             }
 
@@ -183,7 +185,9 @@ class Manager{
                         // do nothing, it has to be treated as a group
                         continue;
                     }
-                    $stringKeys[] = $key;
+                    if( !str_contains($key, '$') ) {
+                        $stringKeys[] = $key;
+                    }
                 }
             }
         }
